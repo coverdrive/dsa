@@ -40,10 +40,10 @@ class Sort(Generic[X]):
     @staticmethod
     def merge(sl1: Sequence[X], sl2: Sequence[X]) -> Sequence[X]:
         # merge two sorted lists sl1, sl2 into sorted list sl
-        i, j = 0, 0
+        i, j, k = 0, 0, 0
         sz1: int = len(sl1)
         sz2: int = len(sl2)
-        sl: List[X] = []
+        sl: List[X] = [0] * (len(sl1) + len(sl2))
         while i < sz1 and j < sz2:
             if sl1[i] < sl2[j]:
                 val = sl1[i]
@@ -51,13 +51,16 @@ class Sort(Generic[X]):
             else:
                 val = sl2[j]
                 j += 1
-            sl.append(val)
+            sl[k] = val
+            k += 1
         while i < sz1:
-            sl.append(sl1[i])
+            sl[k] = sl1[i]
             i += 1
+            k += 1
         while j < sz2:
-            sl.append(sl2[j])
+            sl[k] = sl2[j]
             j += 1
+            k += 1
         return sl
 
     def merge_sort(self) -> Sequence[X]:
@@ -97,8 +100,7 @@ class Sort(Generic[X]):
     def heap_sort(self) -> Sequence[X]:
         sl: List[X] = self.get_copy()
         heap: Heap = Heap(l=sl, heap_size=len(sl))
-        heap.heap_sort()
-        return heap.l
+        return heap.heap_sort()
 
 
 if __name__ == '__main__':
