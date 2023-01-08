@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from typing import Sequence, Generic, TypeVar, Set, Tuple, Mapping
-from itertools import groupby
+from typing import Sequence, Generic, TypeVar, Set, Tuple, Mapping, List, Dict
 from queue import Queue, create_empty_queue
 from stack import Stack, create_empty_stack
 
@@ -9,8 +8,8 @@ X = TypeVar('X')
 
 class DirGraph(Generic[X]):
     edges: Set[Tuple[X, X]]
-    node_visited: Mapping[X, bool]
-    node_edges_map: Mapping[X, Sequence[X]]
+    node_visited: Dict[X, bool]
+    node_edges_map: Mapping[X, List[X]]
 
     def __init__(self, edges: Set[Tuple[X, X]]):
         self.edges = edges
@@ -61,7 +60,6 @@ class DirGraph(Generic[X]):
             if not self.node_visited[y]:
                 ret += self.depth_first_walk_rec(y)
         return ret
-
 
     def __repr__(self) -> str:
         ret: str = ""
