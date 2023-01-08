@@ -1,8 +1,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Generic, TypeVar
+from comparable import Comparable
 
-X = TypeVar('X')
+X = TypeVar('X', bound=Comparable)
 
 
 @dataclass
@@ -21,21 +22,21 @@ class LinkedListNode(Generic[X]):
         return ret_val
 
 
-LinkedList = Optional[LinkedListNode]
+LinkedList = Optional[LinkedListNode[X]]
 
 
 def create_empty_linked_list() -> LinkedList:
     return None
 
 
-def car(ll: LinkedList) -> X:
+def car(ll: LinkedList[X]) -> X:
     if ll is None:
         raise ValueError("Cannot car from an empty list")
     else:
         return ll.key
 
 
-def cdr(ll: Linkedlist) -> LinkedList:
+def cdr(ll: LinkedList) -> LinkedList:
     if ll is None:
         raise ValueError("Cannot cdr from an empty list")
     else:
@@ -85,8 +86,8 @@ def sort(ll: LinkedList) -> LinkedList:
 
 
 if __name__ == '__main__':
-    ll: LinkedList = create_empty_linked_list()
-    ll1: LinkedList = cons(3, ll)
+    ll0: LinkedList = create_empty_linked_list()
+    ll1: LinkedList = cons(3, ll0)
     print(ll1)
     ll2: LinkedList = cons(5, ll1)
     print(ll2)

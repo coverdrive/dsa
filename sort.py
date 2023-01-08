@@ -6,14 +6,16 @@ from dataclasses import dataclass
 from typing import Sequence,  Generic, TypeVar, List
 from heap import Heap
 
-X = TypeVar('X')
+from comparable import Comparable
+
+X = TypeVar('X', bound=Comparable)
 
 
 @dataclass(frozen=True)
 class Sort(Generic[X]):
     l: Sequence[X]
 
-    def get_copy(self) -> Sequence[X]:
+    def get_copy(self) -> List[X]:
         return [x for x in self.l]
 
     def bubble_sort(self) -> Sequence[X]:
@@ -43,7 +45,7 @@ class Sort(Generic[X]):
         i, j, k = 0, 0, 0
         sz1: int = len(sl1)
         sz2: int = len(sl2)
-        sl: List[X] = [0] * (len(sl1) + len(sl2))
+        sl: List[X] = [x for x in sl1] + [y for y in sl2]
         while i < sz1 and j < sz2:
             if sl1[i] < sl2[j]:
                 val = sl1[i]
@@ -97,9 +99,13 @@ class Sort(Generic[X]):
         Sort.quick_sort_recurse(sl, 0, len(sl))
         return sl
 
-    def heap_sort(self) -> Sequence[X]:
+    def heap_sort(self, smallest_element: X) -> Sequence[X]:
         sl: List[X] = self.get_copy()
-        heap: Heap = Heap(l=sl, heap_size=len(sl))
+        heap: Heap = Heap(
+            l=sl,
+            heap_size=len(sl),
+            smallest_element=smallest_element
+        )
         return heap.heap_sort()
 
 
@@ -114,7 +120,7 @@ if __name__ == '__main__':
     print(merge_sort_seq)
     quick_sort_seq: Sequence[int] = seq_obj.quick_sort()
     print(quick_sort_seq)
-    heap_sort_seq: Sequence[int] = seq_obj.heap_sort()
+    heap_sort_seq: Sequence[int] = seq_obj.heap_sort(smallest_element=-1000000)
     print(heap_sort_seq)
 
 

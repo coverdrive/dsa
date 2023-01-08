@@ -1,13 +1,13 @@
 from dataclasses import dataclass
-from typing import Sequence,  Generic, TypeVar
+from typing import Sequence, Generic, TypeVar, List
 
 X = TypeVar('X')
 
 
 @dataclass
 class Stack(Generic[X]):
-    l: Sequence[X]
-    top: int # index of element at the top of the stack
+    l: List[X]
+    top: int  # index of element at the top of the stack
 
     def is_empty(self) -> bool:
         if self.top == -1:
@@ -44,7 +44,7 @@ def create_empty_stack(capacity: int) -> Stack:
 
 
 def create_full_capacity_stack(seq: Sequence[X]) -> Stack:
-    return Stack(l=seq, top=len(seq) - 1)
+    return Stack(l=[x for x in seq], top=len(seq) - 1)
 
 
 if __name__ == '__main__':

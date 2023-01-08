@@ -1,14 +1,14 @@
 from dataclasses import dataclass
-from typing import Sequence,  Generic, TypeVar
+from typing import Sequence, Generic, TypeVar, List
 
 X = TypeVar('X')
 
 
 @dataclass
 class Queue(Generic[X]):
-    l: Sequence[X]
-    head: int # index of head element in queue
-    size: int # number of elements in queue
+    l: List[X]
+    head: int  # index of head element in queue
+    size: int  # number of elements in queue
 
     def tail(self) -> int:
         # index in queue where next enqueue will occur
@@ -31,7 +31,7 @@ class Queue(Generic[X]):
             raise ValueError("Cannot dequeue from empty queue")
         else:
             ret_val: X = self.l[self.head]
-            self.head = (self.head + 1 ) % len(self.l)
+            self.head = (self.head + 1) % len(self.l)
             self.size -= 1
             return ret_val
 
@@ -52,7 +52,7 @@ def create_empty_queue(capacity: int) -> Queue:
 
 
 def create_full_capacity_queue(seq: Sequence[X]) -> Queue:
-    return Queue(l=seq, head=0, size=len(seq))
+    return Queue(l=[x for x in seq], head=0, size=len(seq))
 
 
 if __name__ == '__main__':

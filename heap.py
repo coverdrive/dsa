@@ -4,16 +4,18 @@
 # If all elements of l are <= e,  we return len(l)
 
 from dataclasses import dataclass
-from typing import Sequence,  Generic, TypeVar
+from typing import Sequence,  Generic, TypeVar, List
 
-X = TypeVar('X')
-SMALL_NUM = -100000
+from comparable import Comparable
+
+X = TypeVar('X', bound=Comparable)
 
 
 @dataclass
 class Heap(Generic[X]):
-    l: Sequence[X]
+    l: List[X]
     heap_size: int
+    smallest_element: X
 
     @staticmethod
     def parent(i: int) -> int:
@@ -90,14 +92,15 @@ class Heap(Generic[X]):
         self.l[i] = val
         j = i
         while j > 0 and self.l[Heap.parent(j)] < self.l[j]:
-            self.l[Heap.parent(j)], self.l[j] = self.l[j], self.l[Heap.parent(j)]
+            self.l[Heap.parent(j)], self.l[j] = \
+                self.l[j], self.l[Heap.parent(j)]
             j = Heap.parent(j)
 
     def insert_in_heap(self, x: X) -> None:
         if self.heap_size == len(self.l):
             raise ValueError("cannot insert as heap size is at full capacity")
         else:
-            self.l[self.heap_size] = SMALL_NUM
+            self.l[self.heap_size] = self.smallest_element
             self.heap_size += 1
             self.increase_node_val(self.heap_size - 1, x)
 
@@ -105,8 +108,8 @@ class Heap(Generic[X]):
         return str(heap.l[:heap.heap_size])
 
 
-def create_empty_heap(capacity: int) -> Heap:
-    return Heap(l=[0] * capacity, heap_size=0)
+def create_empty_heap(capacity: int) -> Heap[int]:
+    return Heap(l=[0] * capacity, heap_size=0, smallest_element=-10000000)
 
 
 if __name__ == '__main__':

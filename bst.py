@@ -23,10 +23,10 @@ class BSTNode(Generic[X]):
     def displayBST(self, level=0) -> str:
         ret_val: str = ''
         if self.right is not None:
-            ret_val += self.right.printBST(level + 1)
+            ret_val += self.right.displayBST(level + 1)
         ret_val += ' ' * 4 * level + '-> ' + str(self.key) + '\n'
         if self.left is not None:
-            ret_val += self.left.printBST(level + 1)
+            ret_val += self.left.displayBST(level + 1)
         return ret_val
 
     def __repr__(self) -> str:
@@ -40,7 +40,7 @@ def create_empty_BST() -> BST:
     return None
 
 
-def create_single_node_BST(elem: X) -> BST:
+def create_single_node_BST(elem: X) -> BSTNode:
     return BSTNode(
         key=elem,
         parent=None,
@@ -72,7 +72,7 @@ def maximum(bstNode: BSTNode) -> BSTNode:
         return maximum(bstNode.right)
 
 
-def successor(bstNode: BSTNode) -> BSTNode:
+def successor(bstNode: BSTNode) -> BST:
     if bstNode.right is not None:
         return minimum(bstNode.right)
     else:
@@ -84,7 +84,7 @@ def successor(bstNode: BSTNode) -> BSTNode:
         return p
 
 
-def predecessor(bstNode: BSTNode) -> BSTNode:
+def predecessor(bstNode: BSTNode) -> BST:
     if bstNode.left is not None:
         return minimum(bstNode.left)
     else:
@@ -97,7 +97,7 @@ def predecessor(bstNode: BSTNode) -> BSTNode:
 
 
 def insert(bstNode: BSTNode, elem: X) -> BSTNode:
-    single_node: BST = create_single_node_BST(elem)
+    single_node: BSTNode = create_single_node_BST(elem)
     if elem <= bstNode.key:
         if bstNode.left is None:
             bstNode.left = single_node
